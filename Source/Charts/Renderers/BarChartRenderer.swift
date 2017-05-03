@@ -428,13 +428,15 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                         
                         if dataSet.isDrawValuesEnabled
                         {
+                            let LifeWalletLocalFormatter:String = val > 0.0 ? formatter.stringForValue(
+                                val,
+                                entry: e,
+                                dataSetIndex: dataSetIndex,
+                                viewPortHandler: viewPortHandler) : ""
+                            
                             drawValue(
                                 context: context,
-                                value: formatter.stringForValue(
-                                    val,
-                                    entry: e,
-                                    dataSetIndex: dataSetIndex,
-                                    viewPortHandler: viewPortHandler),
+                                value: LifeWalletLocalFormatter,
                                 xPos: x,
                                 yPos: val >= 0.0
                                     ? (rect.origin.y + posOffset)
