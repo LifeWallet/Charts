@@ -200,7 +200,7 @@ open class Legend: ComponentBase
     open var textColor = NSUIColor.black
 
     /// The form/shape of the legend forms
-    open var form = Form.square
+    open var form = Form.empty
     
     /// The size of the legend forms
     open var formSize = CGFloat(8.0)
