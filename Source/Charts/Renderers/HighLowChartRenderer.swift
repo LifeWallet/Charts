@@ -14,8 +14,7 @@ import CoreGraphics
 #endif
 
 
-open class HighLowChartRenderer: LineScatterCandleRadarRenderer
-{
+open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
     open weak var dataProvider: CandleChartDataProvider?
     
     public init(dataProvider: CandleChartDataProvider?, animator: Animator?, viewPortHandler: ViewPortHandler?)
@@ -25,8 +24,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
         self.dataProvider = dataProvider
     }
     
-    open override func drawData(context: CGContext)
-    {
+    open override func drawData(context: CGContext){
         guard let dataProvider = dataProvider, let candleData = dataProvider.candleData else { return }
         
         for set in candleData.dataSets as! [ICandleChartDataSet]
@@ -40,8 +38,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
     
     fileprivate var _rangePoints = [CGPoint](repeating: CGPoint(), count: 2)
     
-    open func drawDataSet(context: CGContext, dataSet: ICandleChartDataSet)
-    {
+    open func drawDataSet(context: CGContext, dataSet: ICandleChartDataSet){
         guard let
             dataProvider = dataProvider,
             let animator = animator
@@ -61,8 +58,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
         //context.setLineWidth(dataSet.shadowWidth)
         context.setLineWidth(8.0)
         
-        for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
-        {
+        for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1){
             // get the entry
             guard let e = dataSet.entryForIndex(j) as? CandleChartDataEntry else { continue }
             
@@ -107,8 +103,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
         context.restoreGState()
     }
     
-    open override func drawValues(context: CGContext)
-    {
+    open override func drawValues(context: CGContext){
         guard
             let dataProvider = dataProvider,
             let viewPortHandler = self.viewPortHandler,
@@ -117,8 +112,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
             else { return }
         
         // if values are drawn
-        if isDrawingValuesAllowed(dataProvider: dataProvider)
-        {
+        if isDrawingValuesAllowed(dataProvider: dataProvider){
             var dataSets = candleData.dataSets
             
             let phaseY = animator.phaseY
@@ -128,12 +122,11 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
             //lifewallet
             var lowPoint = CGPoint()
             
-            for i in 0 ..< dataSets.count
-            {
+            for i in 0 ..< dataSets.count{
                 guard let dataSet = dataSets[i] as? IBarLineScatterCandleBubbleChartDataSet
                     else { continue }
                 
-                print("dataset \(dataSet)")
+                print("high low chart dataset: \(dataSet)")
                 if !shouldDrawValues(forDataSet: dataSet)
                 {
                     continue
@@ -156,7 +149,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
                 for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
                 {
                     guard let e = dataSet.entryForIndex(j) as? CandleChartDataEntry else { break }
-                    print("high \(e.high) low \(e.low)")
+                    print("e high \(e.high) e low \(e.low)")
                     pt.x = CGFloat(e.x)
                     pt.y = CGFloat(e.high * phaseY)
                     pt = pt.applying(valueToPixelMatrix)
