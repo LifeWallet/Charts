@@ -59,7 +59,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer
         
         //todo: make dynamic
         //context.setLineWidth(dataSet.shadowWidth)
-        context.setLineWidth(4.0)
+        context.setLineWidth(8.0)
         
         for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
         {
