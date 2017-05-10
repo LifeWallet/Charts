@@ -428,6 +428,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer
                         
                         if dataSet.isDrawValuesEnabled
                         {
+                            //lifewallet edit
                             let LifeWalletLocalFormatter:String = val > 0.0 ? formatter.stringForValue(
                                 val,
                                 entry: e,

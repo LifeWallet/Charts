@@ -50,8 +50,7 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
     
     fileprivate var _lineSegments = [CGPoint](repeating: CGPoint(), count: 2)
     
-    open func drawDataSet(context: CGContext, dataSet: IScatterChartDataSet)
-    {
+    open func drawDataSet(context: CGContext, dataSet: IScatterChartDataSet){
         guard
             let dataProvider = dataProvider,
             let animator = animator,
@@ -68,26 +67,27 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
         
         let valueToPixelMatrix = trans.valueToPixelMatrix
         
-        if let renderer = dataSet.shapeRenderer
-        {
+        if let renderer = dataSet.shapeRenderer{
             context.saveGState()
             
-            for j in 0 ..< Int(min(ceil(Double(entryCount) * animator.phaseX), Double(entryCount)))
-            {
+            for j in 0 ..< Int(min(ceil(Double(entryCount) * animator.phaseX), Double(entryCount))){
                 guard let e = dataSet.entryForIndex(j) else { continue }
                 
                 point.x = CGFloat(e.x)
                 point.y = CGFloat(e.y * phaseY)
                 point = point.applying(valueToPixelMatrix)
                 
-                if !viewPortHandler.isInBoundsRight(point.x)
-                {
+                if !viewPortHandler.isInBoundsRight(point.x){
                     break
                 }
                 
                 if !viewPortHandler.isInBoundsLeft(point.x) ||
-                    !viewPortHandler.isInBoundsY(point.y)
-                {
+                    !viewPortHandler.isInBoundsY(point.y){
+                    continue
+                }
+                
+                //lifewallet edit - don't draw shap if it's 0
+                if (e.y < 0.1){
                     continue
                 }
                 
@@ -124,8 +124,7 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
             {
                 let dataSet = dataSets[i]
                 
-                if !shouldDrawValues(forDataSet: dataSet)
-                {
+                if !shouldDrawValues(forDataSet: dataSet){
                     continue
                 }
                 
@@ -146,13 +145,13 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
                 for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
                 {
                     guard let e = dataSet.entryForIndex(j) else { break }
-                    
                     pt.x = CGFloat(e.x)
                     pt.y = CGFloat(e.y * phaseY)
                     pt = pt.applying(valueToPixelMatrix)
                     
-                    if (!viewPortHandler.isInBoundsRight(pt.x))
-                    {
+                   
+                    
+                    if (!viewPortHandler.isInBoundsRight(pt.x)){
                         break
                     }
                     
@@ -162,6 +161,7 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
                     {
                         continue
                     }
+                    
                     
                     let text = formatter.stringForValue(
                         e.y,
@@ -182,8 +182,7 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer
                         )
                     }
                     
-                    if let icon = e.icon, dataSet.isDrawIconsEnabled
-                    {
+                    if let icon = e.icon, dataSet.isDrawIconsEnabled{
                         ChartUtils.drawImage(context: context,
                                              image: icon,
                                              x: pt.x + iconsOffset.x,
