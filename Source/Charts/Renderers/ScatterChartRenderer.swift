@@ -80,7 +80,7 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer{
                     continue
                 }
                 
-                //lifewallet edit - don't draw shap if it's 0
+                //lifewallet edit - don't draw shape if it's 0
                 if (e.y < 0.1){
                     continue
                 }

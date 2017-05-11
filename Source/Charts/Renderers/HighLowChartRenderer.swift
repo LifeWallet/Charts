@@ -17,8 +17,7 @@ import CoreGraphics
 open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
     open weak var dataProvider: CandleChartDataProvider?
     
-    public init(dataProvider: CandleChartDataProvider?, animator: Animator?, viewPortHandler: ViewPortHandler?)
-    {
+    public init(dataProvider: CandleChartDataProvider?, animator: Animator?, viewPortHandler: ViewPortHandler?){
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
         self.dataProvider = dataProvider
@@ -27,10 +26,8 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
     open override func drawData(context: CGContext){
         guard let dataProvider = dataProvider, let candleData = dataProvider.candleData else { return }
         
-        for set in candleData.dataSets as! [ICandleChartDataSet]
-        {
-            if set.isVisible
-            {
+        for set in candleData.dataSets as! [ICandleChartDataSet]{
+            if set.isVisible{
                 drawDataSet(context: context, dataSet: set)
             }
         }
@@ -69,6 +66,11 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             let high = e.high
             let low = e.low
             
+            //lifewallet edit - don't draw shape if it's 0
+            if (high < 0.1 && low < 0.1){
+                continue
+            }
+            
             _rangePoints[0].x = CGFloat(xPos)
             _rangePoints[0].y = CGFloat(high * phaseY)
             _rangePoints[1].x = CGFloat(xPos)
@@ -80,16 +82,13 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             // draw the ranges
             var barColor: NSUIColor! = nil
             
-            if open > close
-            {
+            if open > close{
                 barColor = dataSet.decreasingColor ?? dataSet.color(atIndex: j)
             }
-            else if open < close
-            {
+            else if open < close{
                 barColor = dataSet.increasingColor ?? dataSet.color(atIndex: j)
             }
-            else
-            {
+            else{
                 barColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
             }
             
@@ -149,7 +148,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                 for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1)
                 {
                     guard let e = dataSet.entryForIndex(j) as? CandleChartDataEntry else { break }
-                    print("e high \(e.high) e low \(e.low)")
+                    //print("e high \(e.high) e low \(e.low)")
                     pt.x = CGFloat(e.x)
                     pt.y = CGFloat(e.high * phaseY)
                     pt = pt.applying(valueToPixelMatrix)
@@ -171,14 +170,13 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                     
                     if dataSet.isDrawValuesEnabled
                     {
+                        //lifewallet
+                        let highString = e.high > 0.0 ? formatter.stringForValue(e.high, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler) : ""
+                        
                         /* high values */
                         ChartUtils.drawText(
                             context: context,
-                            text: formatter.stringForValue(
-                                e.high,
-                                entry: e,
-                                dataSetIndex: i,
-                                viewPortHandler: viewPortHandler),
+                            text: highString,
                             point: CGPoint(
                                 x: pt.x,
                                 y: pt.y - yOffset),
@@ -186,14 +184,11 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                             attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: dataSet.valueTextColorAt(j)])
                         
                         //lifewallet
+                        let lowString = e.low > 0.0 ? formatter.stringForValue(e.low, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler) : ""
                         /* low values */
                         ChartUtils.drawText(
                             context: context,
-                            text: formatter.stringForValue(
-                                e.low,
-                                entry: e,
-                                dataSetIndex: i,
-                                viewPortHandler: viewPortHandler),
+                            text: lowString,
                             point: CGPoint(
                                 x: lowPoint.x,
                                 y: lowPoint.y + 5.0),
