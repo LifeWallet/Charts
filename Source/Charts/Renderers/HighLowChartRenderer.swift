@@ -168,10 +168,10 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                         continue
                     }
                     
-                    if dataSet.isDrawValuesEnabled
+                    if dataSet.isDrawValuesEnabled && !(e.high < 0.1 && e.low < 0.1)
                     {
                         //lifewallet
-                        let highString = e.high > 0.0 ? formatter.stringForValue(e.high, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler) : ""
+                        let highString = formatter.stringForValue(e.high, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler)
                         
                         /* high values */
                         ChartUtils.drawText(
@@ -184,7 +184,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                             attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: dataSet.valueTextColorAt(j)])
                         
                         //lifewallet
-                        let lowString = e.low > 0.0 ? formatter.stringForValue(e.low, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler) : ""
+                        let lowString = formatter.stringForValue(e.low, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler)
                         /* low values */
                         ChartUtils.drawText(
                             context: context,
