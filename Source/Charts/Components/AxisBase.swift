@@ -146,6 +146,7 @@ open class AxisBase: ComponentBase
         return longest
     }
     
+    //lifewallet - gets the date labels from the delegate
     /// - returns: The formatted label at the specified index. This will either use the auto-formatter or the custom formatter (if one is set).
     open func getFormattedLabel(_ index: Int) -> String
     {

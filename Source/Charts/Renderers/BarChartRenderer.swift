@@ -64,7 +64,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
             else { return }
         
         let barWidthHalf = barData.barWidth / 2.0
-    
+        
         let buffer = _buffers[index]
         var bufferIndex = 0
         let containsStacks = dataSet.isStacked
@@ -311,11 +311,11 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
     
     open func prepareBarHighlight(
         x: Double,
-          y1: Double,
-          y2: Double,
-          barWidthHalf: Double,
-          trans: Transformer,
-          rect: inout CGRect)
+        y1: Double,
+        y2: Double,
+        barWidthHalf: Double,
+        trans: Transformer,
+        rect: inout CGRect)
     {
         let left = x - barWidthHalf
         let right = x + barWidthHalf
@@ -329,7 +329,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
         
         trans.rectValueToPixel(&rect, phaseY: animator?.phaseY ?? 1.0)
     }
-
+    
     open override func drawValues(context: CGContext)
     {
         // if values are drawn
@@ -343,7 +343,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                 else { return }
             
             var dataSets = barData.dataSets
-
+            
             let valueOffsetPlus: CGFloat = 4.5
             var posOffset: CGFloat
             var negOffset: CGFloat
@@ -381,18 +381,19 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                 let phaseY = animator.phaseY
                 
                 let iconsOffset = dataSet.iconsOffset
-        
+                
                 // if only single values are drawn (sum)
                 if !dataSet.isStacked
                 {
+                    var positionArray = [CGFloat]()
                     for j in 0 ..< Int(ceil(Double(dataSet.entryCount) * animator.phaseX))
                     {
                         guard let e = dataSet.entryForIndex(j) as? BarChartDataEntry else { continue }
                         
                         let rect = buffer.rects[j]
-                        
+                        // lifewallet - determines where the the bar values are positioned
                         let x = rect.origin.x + rect.size.width / 2.0
-                        
+                        positionArray.append(x)
                         if !viewPortHandler.isInBoundsRight(x)
                         {
                             break
@@ -442,6 +443,8 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                                 size: icon.size)
                         }
                     }
+                    print("positionsssss \(positionArray)")
+                    //formatter.horizontalValuePositions(values: positionArray)
                 }else{
                     // if we have stacks
                     
