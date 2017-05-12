@@ -144,4 +144,20 @@ open class CandleChartDataSet: LineScatterCandleRadarChartDataSet, ICandleChartD
     
     /// Are decreasing values drawn as filled?
     open var isDecreasingFilled: Bool { return decreasingFilled }
+    
+    //lifewallet
+    /// - returns: The size the scatter shape will have
+    open var scatterShapeSize = CGFloat(10.0)
+    
+    /// - returns: The radius of the hole in the shape (applies to Square, Circle and Triangle)
+    /// Set this to <= 0 to remove holes.
+    /// **default**: 0.0
+    open var scatterShapeHoleRadius = CGFloat(0.0)
+    
+    /// - returns: Color for the hole in the shape. Setting to `nil` will behave as transparent.
+    /// **default**: nil
+    open var scatterShapeHoleColor: NSUIColor? = nil
+    
+    /// - returns: The IShapeRenderer responsible for rendering this DataSet.
+    open var shapeRenderer: IShapeRenderer? = SquareShapeRenderer()
 }

@@ -59,4 +59,16 @@ open class SquareShapeRenderer : NSObject, IShapeRenderer
             context.fill(rect)
         }
     }
+    
+    open func renderSquareForHighLowChart(
+        context: CGContext,
+        dataSet: ICandleChartDataSet,
+        viewPortHandler: ViewPortHandler,
+        rect: CGRect,
+        color: NSUIColor)
+    {
+        context.setFillColor(color.cgColor)
+        context.addRect(rect)
+        context.fillPath()
+    }
 }

@@ -27,4 +27,16 @@ public protocol IShapeRenderer : NSObjectProtocol
         viewPortHandler: ViewPortHandler,
         point: CGPoint,
         color: NSUIColor)
+    
+    @objc optional func renderShapeForHighLowChart(context: CGContext,
+                                                   dataSet: ICandleChartDataSet,
+                                                   viewPortHandler: ViewPortHandler,
+                                                   point: CGPoint,
+                                                   color: NSUIColor)
+    
+    @objc optional func renderSquareForHighLowChart(context: CGContext,
+                                                    dataSet: ICandleChartDataSet,
+                                                    viewPortHandler: ViewPortHandler,
+                                                    rect: CGRect,
+                                                    color: NSUIColor)
 }

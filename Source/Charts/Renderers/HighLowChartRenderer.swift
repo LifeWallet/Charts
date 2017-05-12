@@ -17,6 +17,10 @@ import CoreGraphics
 open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
     open weak var dataProvider: CandleChartDataProvider?
     
+    //lifewallet
+    open var dounutRenderer = ScatterChartDataSet.renderer(forShape: ScatterChartDataSet.Shape(rawValue: 1)!)
+    open var innerRectRenderer = ScatterChartDataSet.renderer(forShape: ScatterChartDataSet.Shape(rawValue: 0)!)
+    
     public init(dataProvider: CandleChartDataProvider?, animator: Animator?, viewPortHandler: ViewPortHandler?){
         super.init(animator: animator, viewPortHandler: viewPortHandler)
         
