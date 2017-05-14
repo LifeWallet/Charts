@@ -27,4 +27,6 @@ open class HighLowChartView: BarLineChartViewBase, CandleChartDataProvider
     {
         return _data as? CandleChartData
     }
+    
+    open var positions = [CGFloat]()
 }

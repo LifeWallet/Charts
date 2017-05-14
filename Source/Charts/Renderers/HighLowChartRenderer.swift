@@ -46,7 +46,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             else { return }
         
         let trans = dataProvider.getTransformer(forAxis: dataSet.axisDependency)
-        
+        let valueToPixelMatrix = trans.valueToPixelMatrix
         
         let phaseY = animator.phaseY
         
@@ -57,7 +57,10 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
         
         //todo: make dynamic
         //context.setLineWidth(dataSet.shadowWidth)
-        context.setLineWidth(8.0)
+        context.setLineWidth(7.0)
+        
+        //lifewallet
+        var positionArray = [CGFloat]()
         
         for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1){
             // get the entry
@@ -80,8 +83,32 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             _rangePoints[1].x = CGFloat(xPos)
             _rangePoints[1].y = CGFloat(low * phaseY)
             
-            trans.pointValuesToPixel(&_rangePoints)
+            var highPt = CGPoint()
+            highPt.x = CGFloat(xPos)
+            highPt.y = CGFloat(high * phaseY)
+            highPt = highPt.applying(valueToPixelMatrix)
             
+            var lowPt = CGPoint()
+            lowPt.x = CGFloat(xPos)
+            lowPt.y = CGFloat(low * phaseY)
+            lowPt = lowPt.applying(valueToPixelMatrix)
+            
+            //lifewallet - create a dounut for each high and low point
+            dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: highPt, color: UIColor.white)
+            dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: lowPt, color: UIColor.white)
+            
+            //don't show middle fifty percent if it's going to take over the whole line
+            if e.high - e.low > 2 {
+//                let rect = CGRect(x: highPt.x - 3.5, y: highPt.y + 10, width: 7.0, height: 10.0)
+//                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: UIColor.white)
+            }
+            
+            positionArray.append(highPt.x - 3.5)
+            
+            //lifewallet - change line width back bc renderer changes it.
+            context.setLineWidth(7.0)
+            
+            trans.pointValuesToPixel(&_rangePoints)
             
             // draw the ranges
             var barColor: NSUIColor! = nil
@@ -103,6 +130,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
 
         }
         
+        dataProvider.positions = positionArray
         context.restoreGState()
     }
     

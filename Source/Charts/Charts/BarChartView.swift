@@ -15,6 +15,9 @@ import CoreGraphics
 /// Chart that draws bars.
 open class BarChartView: BarLineChartViewBase, BarChartDataProvider
 {
+    //lifewallet
+    open var positions = [CGFloat]()
+    
     /// if set to true, all values are drawn above their bars, instead of below their top
     fileprivate var _drawValueAboveBarEnabled = true
 
