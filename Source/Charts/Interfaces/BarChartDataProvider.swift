@@ -22,5 +22,5 @@ public protocol BarChartDataProvider: BarLineScatterCandleBubbleChartDataProvide
     var isHighlightFullBarEnabled: Bool { get }
     
     //lifewallet
-    var positions: [CGFloat] { get set }
+    var positions: [Float] { get set }
 }

@@ -60,7 +60,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
         context.setLineWidth(7.0)
         
         //lifewallet
-        var positionArray = [CGFloat]()
+        var positionArray = [Float]()
         
         for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1){
             // get the entry
@@ -103,7 +103,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
 //                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: UIColor.white)
             }
             
-            positionArray.append(highPt.x - 3.5)
+            positionArray.append(Float(highPt.x - 3.5))
             
             //lifewallet - change line width back bc renderer changes it.
             context.setLineWidth(7.0)
@@ -201,7 +201,8 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                     }
                     
                     //lifewallet
-                    if dataSet.isDrawValuesEnabled && !(e.high < 0.1 && e.low < 0.1)
+                    let lifeWalletHighLowLooksBetterPlain:Bool = false
+                    if dataSet.isDrawValuesEnabled && !(e.high < 0.1 && e.low < 0.1) && lifeWalletHighLowLooksBetterPlain
                     {
                         let highString = formatter.stringForValue(e.high, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler)
                         

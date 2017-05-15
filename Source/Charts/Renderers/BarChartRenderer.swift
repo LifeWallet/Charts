@@ -276,10 +276,11 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
             context.setFillColor(dataSet.color(atIndex: 0).cgColor)
         }
         
+        var positionArray = [Float]()
         for j in stride(from: 0, to: buffer.rects.count, by: 1)
         {
             let barRect = buffer.rects[j]
-            
+            positionArray.append(Float(barRect.origin.x))
             if (!viewPortHandler.isInBoundsLeft(barRect.origin.x + barRect.size.width))
             {
                 continue
@@ -306,6 +307,9 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
             }
         }
         
+        print("positionsssss \(positionArray)")
+        dataProvider.positions = positionArray
+        barChart?.callLifeWalletDelegate()
         context.restoreGState()
     }
     
@@ -385,7 +389,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                 // if only single values are drawn (sum)
                 if !dataSet.isStacked
                 {
-                    var positionArray = [CGFloat]()
+                    
                     for j in 0 ..< Int(ceil(Double(dataSet.entryCount) * animator.phaseX))
                     {
                         guard let e = dataSet.entryForIndex(j) as? BarChartDataEntry else { continue }
@@ -393,7 +397,6 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                         let rect = buffer.rects[j]
                         // lifewallet - determines where the the bar values are positioned
                         let x = rect.origin.x + rect.size.width / 2.0
-                        positionArray.append(x)
                         if !viewPortHandler.isInBoundsRight(x)
                         {
                             break
@@ -443,8 +446,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
                                 size: icon.size)
                         }
                     }
-                    print("positionsssss \(positionArray)")
-                    //formatter.horizontalValuePositions(values: positionArray)
+                    
                 }else{
                     // if we have stacks
                     
@@ -580,7 +582,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
     
     /// Draws a value at the specified x and y position.
     open func drawValue(context: CGContext, value: String, xPos: CGFloat, yPos: CGFloat, font: NSUIFont, align: NSTextAlignment, color: NSUIColor){
-        ChartUtils.drawText(context: context, text: value, point: CGPoint(x: xPos, y: yPos), align: align, attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: color])
+        //ChartUtils.drawText(context: context, text: value, point: CGPoint(x: xPos, y: yPos), align: align, attributes: [NSFontAttributeName: font, NSForegroundColorAttributeName: color])
     }
     
     open override func drawExtras(context: CGContext){

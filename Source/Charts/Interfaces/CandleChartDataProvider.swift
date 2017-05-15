@@ -16,5 +16,5 @@ import CoreGraphics
 public protocol CandleChartDataProvider: BarLineScatterCandleBubbleChartDataProvider
 {
     var candleData: CandleChartData? { get }
-    var positions: [CGFloat] { get set }
+    var positions: [Float] { get set }
 }

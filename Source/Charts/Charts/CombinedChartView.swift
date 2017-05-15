@@ -224,5 +224,5 @@ open class CombinedChartView: BarLineChartViewBase, CombinedChartDataProvider
     open var isHighlightFullBarEnabled: Bool { return highlightFullBarEnabled }
     
     //lifewallet
-    open var positions: [CGFloat] = [CGFloat]()
+    open var positions: [Float] = [Float]()
 }

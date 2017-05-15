@@ -15,6 +15,11 @@ import CoreGraphics
 @objc(ChartDataRendererBase)
 open class DataRenderer: Renderer
 {
+    //lifewallet
+    open var barChart:BarChartView?
+    open var scatterChart:ScatterChartView?
+    open var highLowChart:HighLowChartView?
+    
     open var animator: Animator?
     
     public init(animator: Animator?, viewPortHandler: ViewPortHandler?)

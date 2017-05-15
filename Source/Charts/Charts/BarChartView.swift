@@ -16,7 +16,13 @@ import CoreGraphics
 open class BarChartView: BarLineChartViewBase, BarChartDataProvider
 {
     //lifewallet
-    open var positions = [CGFloat]()
+    open var positions = [Float]()
+    open var lifeWalletFormatter:LifeWalletFormatter?
+    //we don't have refrecne to renderer so we call the hack the delegate this way
+    func callLifeWalletDelegate(){
+        print("reached positions view bar chart \(_viewPortHandler.chartWidth)")
+        lifeWalletFormatter?.dataForGraph(positions: positions, leftBorder: Float(_viewPortHandler.contentLeft), width: Float(_viewPortHandler.contentRight))
+    }
     
     /// if set to true, all values are drawn above their bars, instead of below their top
     fileprivate var _drawValueAboveBarEnabled = true
@@ -29,6 +35,7 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
         super.initialize()
         
         renderer = BarChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler)
+        renderer?.barChart = self
         
         self.highlighter = BarHighlighter(chart: self)
         

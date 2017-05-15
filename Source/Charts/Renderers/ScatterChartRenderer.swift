@@ -157,7 +157,9 @@ open class ScatterChartRenderer: LineScatterCandleRadarRenderer{
                         dataSetIndex: i,
                         viewPortHandler: viewPortHandler)
                     
-                    if dataSet.isDrawValuesEnabled{
+                    //lifewallet
+                    let lifeWalletHighLowLooksBetterPlain:Bool = false
+                    if dataSet.isDrawValuesEnabled && lifeWalletHighLowLooksBetterPlain{
                         ChartUtils.drawText(
                             context: context,
                             text: text,
