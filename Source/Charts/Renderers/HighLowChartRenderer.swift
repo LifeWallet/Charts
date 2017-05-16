@@ -37,6 +37,15 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
         }
     }
     
+    //lifewallet - the formula is to get a quarter of the difference between high and low, and then add this quarter to the low and subtract it from the high.
+    func firstAndLastQuarterFromRange(low:Double, high:Double) -> (bottom:Double, top:Double){
+        let range = high - low
+        let diff = range * 0.25
+        let topQuarter = high - diff
+        let bottomQuarter = low + diff
+        return (bottomQuarter, topQuarter)
+    }
+    
     fileprivate var _rangePoints = [CGPoint](repeating: CGPoint(), count: 2)
     
     open func drawDataSet(context: CGContext, dataSet: ICandleChartDataSet){
@@ -67,11 +76,9 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             guard let e = dataSet.entryForIndex(j) as? CandleChartDataEntry else { continue }
             
             let xPos = e.x
-            
-            let open = e.open
-            let close = e.close
             let high = e.high
             let low = e.low
+            let tup = firstAndLastQuarterFromRange(low: low, high: high)
             
             //lifewallet edit - don't draw shape if it's 0
             if (high < 0.1 && low < 0.1){
@@ -93,14 +100,24 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             lowPt.y = CGFloat(low * phaseY)
             lowPt = lowPt.applying(valueToPixelMatrix)
             
+            var bottomQuarterPt = CGPoint()
+            bottomQuarterPt.x = CGFloat(xPos)
+            bottomQuarterPt.y = CGFloat(tup.bottom * phaseY)
+            bottomQuarterPt = bottomQuarterPt.applying(valueToPixelMatrix)
+            
+            var topQuarterPt = CGPoint()
+            topQuarterPt.x = CGFloat(xPos)
+            topQuarterPt.y = CGFloat(tup.top * phaseY)
+            topQuarterPt = topQuarterPt.applying(valueToPixelMatrix)
+            
             //lifewallet - create a dounut for each high and low point
             dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: highPt, color: UIColor.white)
             dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: lowPt, color: UIColor.white)
             
             //don't show middle fifty percent if it's going to take over the whole line
             if e.high - e.low > 2 {
-//                let rect = CGRect(x: highPt.x - 3.5, y: highPt.y + 10, width: 7.0, height: 10.0)
-//                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: UIColor.white)
+                let rect = CGRect(x: highPt.x - 3.5, y: topQuarterPt.y, width: 7.0, height: bottomQuarterPt.y - topQuarterPt.y)
+                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: UIColor.white)
             }
             
             positionArray.append(Float(highPt.x - 3.5))
@@ -111,17 +128,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             trans.pointValuesToPixel(&_rangePoints)
             
             // draw the ranges
-            var barColor: NSUIColor! = nil
-            
-            if open > close{
-                barColor = dataSet.decreasingColor ?? dataSet.color(atIndex: j)
-            }
-            else if open < close{
-                barColor = dataSet.increasingColor ?? dataSet.color(atIndex: j)
-            }
-            else{
-                barColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
-            }
+            let barColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
             
             
             context.setStrokeColor(barColor.cgColor)
