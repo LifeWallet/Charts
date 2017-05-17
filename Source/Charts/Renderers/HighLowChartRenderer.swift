@@ -37,7 +37,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
         }
     }
     
-    //lifewallet - the formula is to get a quarter of the difference between high and low, and then add this quarter to the low and subtract it from the high.
+    //lifewallet - the formula is to get 25% of the difference between high and low, and then add this result to the low and subtract it from the high.
     func firstAndLastQuarterFromRange(low:Double, high:Double) -> (bottom:Double, top:Double){
         let range = high - low
         let diff = range * 0.25
@@ -116,8 +116,9 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
             
             //don't show middle fifty percent if it's going to take over the whole line
             if e.high - e.low > 2 {
+                let transparentWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
                 let rect = CGRect(x: highPt.x - 3.5, y: topQuarterPt.y, width: 7.0, height: bottomQuarterPt.y - topQuarterPt.y)
-                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: UIColor.white)
+                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: transparentWhite)
             }
             
             positionArray.append(Float(highPt.x - 3.5))
