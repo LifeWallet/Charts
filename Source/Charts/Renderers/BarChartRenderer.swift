@@ -269,10 +269,21 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
             }
         }
         
+        if barChart?.lifeWalletShowBarShadow == true{
+            context.setFillColor((barChart?.lifewalletShadowColor.cgColor)!)
+            for v in 0..<buffer.rects.count{
+                let heightOffset:CGFloat = 10.0
+                let barRect = buffer.rects[v]
+                let xOffset:CGFloat = barRect.size.width/3
+                let newHeight = barRect.size.height - heightOffset > 0 ? barRect.size.height - heightOffset : 0.0
+                let shadowRect = CGRect(x: barRect.origin.x + xOffset, y: barRect.origin.y + heightOffset, width: barRect.size.width, height: newHeight)
+                context.fill(shadowRect)
+            }
+        }
+        
         let isSingleColor = dataSet.colors.count == 1
         
-        if isSingleColor
-        {
+        if isSingleColor{
             context.setFillColor(dataSet.color(atIndex: 0).cgColor)
         }
         
@@ -307,7 +318,7 @@ open class BarChartRenderer: BarLineScatterCandleBubbleRenderer{
             }
         }
         
-        print("positionsssss \(positionArray)")
+        //print("positionsssss \(positionArray)")
         dataProvider.positions = positionArray
         barChart?.callLifeWalletDelegate()
         context.restoreGState()

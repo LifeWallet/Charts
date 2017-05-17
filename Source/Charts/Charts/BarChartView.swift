@@ -17,7 +17,10 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
 {
     //lifewallet
     open var positions = [Float]()
+    open var lifeWalletShowBarShadow = false
     open var lifeWalletFormatter:LifeWalletFormatter?
+    open var lifewalletShadowColor:UIColor = UIColor(red: 49/255, green: 53/255, blue: 55/255, alpha: 0.2)
+    
     //we don't have refrecne to renderer so we call the hack the delegate this way
     func callLifeWalletDelegate(){
         print("reached positions view bar chart \(_viewPortHandler.chartWidth)")
