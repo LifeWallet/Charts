@@ -74,68 +74,68 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
         for j in stride(from: _xBounds.min, through: _xBounds.range + _xBounds.min, by: 1){
             // get the entry
             guard let e = dataSet.entryForIndex(j) as? CandleChartDataEntry else { continue }
-            
-            let xPos = e.x
-            let high = e.high
-            let low = e.low
-            let tup = firstAndLastQuarterFromRange(low: low, high: high)
-            
-            //lifewallet edit - don't draw shape if it's 0
-            if (high < 0.1 && low < 0.1){
-                continue
+            if e.lifeWalletShouldDrawForBucket{
+                let xPos = e.x
+                let high = e.high
+                let low = e.low
+                let tup = firstAndLastQuarterFromRange(low: low, high: high)
+                
+                //lifewallet edit - don't draw shape if it's 0
+                if (high < 0.1 && low < 0.1){
+                    continue
+                }
+                
+                _rangePoints[0].x = CGFloat(xPos)
+                _rangePoints[0].y = CGFloat(high * phaseY)
+                _rangePoints[1].x = CGFloat(xPos)
+                _rangePoints[1].y = CGFloat(low * phaseY)
+                
+                var highPt = CGPoint()
+                highPt.x = CGFloat(xPos)
+                highPt.y = CGFloat(high * phaseY)
+                highPt = highPt.applying(valueToPixelMatrix)
+                
+                var lowPt = CGPoint()
+                lowPt.x = CGFloat(xPos)
+                lowPt.y = CGFloat(low * phaseY)
+                lowPt = lowPt.applying(valueToPixelMatrix)
+                
+                var bottomQuarterPt = CGPoint()
+                bottomQuarterPt.x = CGFloat(xPos)
+                bottomQuarterPt.y = CGFloat(tup.bottom * phaseY)
+                bottomQuarterPt = bottomQuarterPt.applying(valueToPixelMatrix)
+                
+                var topQuarterPt = CGPoint()
+                topQuarterPt.x = CGFloat(xPos)
+                topQuarterPt.y = CGFloat(tup.top * phaseY)
+                topQuarterPt = topQuarterPt.applying(valueToPixelMatrix)
+                
+                //lifewallet - create a dounut for each high and low point
+                dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: highPt, color: UIColor.white)
+                dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: lowPt, color: UIColor.white)
+                
+                //don't show middle fifty percent if it's going to take over the whole line
+                if e.high - e.low > 2 {
+                    let transparentWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
+                    let rect = CGRect(x: highPt.x - 3.5, y: topQuarterPt.y, width: 7.0, height: bottomQuarterPt.y - topQuarterPt.y)
+                    innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: transparentWhite)
+                }
+                
+                positionArray.append(Float(highPt.x - 3.5))
+                
+                //lifewallet - change line width back bc renderer changes it.
+                context.setLineWidth(7.0)
+                
+                trans.pointValuesToPixel(&_rangePoints)
+                
+                // draw the ranges
+                let barColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
+                
+                
+                context.setStrokeColor(barColor.cgColor)
+                context.setLineCap(CGLineCap.round)
+                context.strokeLineSegments(between: _rangePoints)
             }
-            
-            _rangePoints[0].x = CGFloat(xPos)
-            _rangePoints[0].y = CGFloat(high * phaseY)
-            _rangePoints[1].x = CGFloat(xPos)
-            _rangePoints[1].y = CGFloat(low * phaseY)
-            
-            var highPt = CGPoint()
-            highPt.x = CGFloat(xPos)
-            highPt.y = CGFloat(high * phaseY)
-            highPt = highPt.applying(valueToPixelMatrix)
-            
-            var lowPt = CGPoint()
-            lowPt.x = CGFloat(xPos)
-            lowPt.y = CGFloat(low * phaseY)
-            lowPt = lowPt.applying(valueToPixelMatrix)
-            
-            var bottomQuarterPt = CGPoint()
-            bottomQuarterPt.x = CGFloat(xPos)
-            bottomQuarterPt.y = CGFloat(tup.bottom * phaseY)
-            bottomQuarterPt = bottomQuarterPt.applying(valueToPixelMatrix)
-            
-            var topQuarterPt = CGPoint()
-            topQuarterPt.x = CGFloat(xPos)
-            topQuarterPt.y = CGFloat(tup.top * phaseY)
-            topQuarterPt = topQuarterPt.applying(valueToPixelMatrix)
-            
-            //lifewallet - create a dounut for each high and low point
-            dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: highPt, color: UIColor.white)
-            dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: lowPt, color: UIColor.white)
-            
-            //don't show middle fifty percent if it's going to take over the whole line
-            if e.high - e.low > 2 {
-                let transparentWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
-                let rect = CGRect(x: highPt.x - 3.5, y: topQuarterPt.y, width: 7.0, height: bottomQuarterPt.y - topQuarterPt.y)
-                innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: transparentWhite)
-            }
-            
-            positionArray.append(Float(highPt.x - 3.5))
-            
-            //lifewallet - change line width back bc renderer changes it.
-            context.setLineWidth(7.0)
-            
-            trans.pointValuesToPixel(&_rangePoints)
-            
-            // draw the ranges
-            let barColor = dataSet.neutralColor ?? dataSet.color(atIndex: j)
-            
-            
-            context.setStrokeColor(barColor.cgColor)
-            context.setLineCap(CGLineCap.round)
-            context.strokeLineSegments(between: _rangePoints)
-
         }
         
         dataProvider.positions = positionArray

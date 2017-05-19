@@ -28,5 +28,7 @@ open class HighLowChartView: BarLineChartViewBase, CandleChartDataProvider
         return _data as? CandleChartData
     }
     
+    //lifewallet
     open var positions = [Float]()
+    open var lifeWalletShouldHideZeroValues = false
 }

@@ -15,6 +15,7 @@ open class CandleChartDataEntry: ChartDataEntry
 {
     //lifewallet
     open var lifeWalletValues = [NSNumber]()
+    open var lifeWalletShouldDrawForBucket = true
     
     /// shadow-high value
     open var high = Double(0.0)
