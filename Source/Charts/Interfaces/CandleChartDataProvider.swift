@@ -16,5 +16,8 @@ import CoreGraphics
 public protocol CandleChartDataProvider: BarLineScatterCandleBubbleChartDataProvider
 {
     var candleData: CandleChartData? { get }
+    
+    //lifewallet CandleChartDataProvider
     var positions: [Float] { get set }
+    var lifeWalletShouldHideMedian: Bool { get set }
 }

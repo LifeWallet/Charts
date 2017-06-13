@@ -23,7 +23,6 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
     
     public init(dataProvider: CandleChartDataProvider?, animator: Animator?, viewPortHandler: ViewPortHandler?){
         super.init(animator: animator, viewPortHandler: viewPortHandler)
-        
         self.dataProvider = dataProvider
     }
     
@@ -114,8 +113,13 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                 dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: highPt, color: UIColor.white)
                 dounutRenderer.renderShapeForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, point: lowPt, color: UIColor.white)
                 
+                var showMedian:Bool = true
+                if let highLowChart = highLowChart{
+                    showMedian = !highLowChart.lifeWalletShouldHideMedian
+                }
+                
                 //don't show middle fifty percent if it's going to take over the whole line
-                if e.high - e.low > 2 {
+                if e.high - e.low > 2 && showMedian {
                     let transparentWhite = UIColor(red: 1, green: 1, blue: 1, alpha: 0.75)
                     let rect = CGRect(x: highPt.x - 3.5, y: topQuarterPt.y, width: 7.0, height: bottomQuarterPt.y - topQuarterPt.y)
                     innerRectRenderer.renderSquareForHighLowChart!(context: context, dataSet: dataSet, viewPortHandler: self.viewPortHandler!, rect: rect, color: transparentWhite)

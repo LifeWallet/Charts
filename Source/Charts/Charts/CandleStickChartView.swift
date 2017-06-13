@@ -27,10 +27,11 @@ open class CandleStickChartView: BarLineChartViewBase, CandleChartDataProvider
     
     // MARK: - CandleChartDataProvider
     
-    open var candleData: CandleChartData?
-    {
+    open var candleData: CandleChartData?{
         return _data as? CandleChartData
     }
     
+    //lifewallet CandleChartDataProvider
     open var positions = [Float]()
+    open var lifeWalletShouldHideMedian = false
 }

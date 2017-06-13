@@ -15,7 +15,8 @@ open class HighLowChartView: BarLineChartViewBase, CandleChartDataProvider
     {
         super.initialize()
         
-        renderer = HighLowChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler)
+        renderer = HighLowChartRenderer(dataProvider: self, animator: _animator, viewPortHandler: _viewPortHandler) as HighLowChartRenderer
+        renderer?.highLowChart = self
         
         self.xAxis.spaceMin = 0.5
         self.xAxis.spaceMax = 0.5
@@ -23,12 +24,14 @@ open class HighLowChartView: BarLineChartViewBase, CandleChartDataProvider
     
     // MARK: - CandleChartDataProvider
     
-    open var candleData: CandleChartData?
-    {
+    open var candleData: CandleChartData?{
         return _data as? CandleChartData
     }
     
-    //lifewallet
+    //lifewallet CandleChartDataProvider
     open var positions = [Float]()
+    open var lifeWalletShouldHideMedian = false
+    
+    //lifewallet
     open var lifeWalletShouldHideZeroValues = false
 }
