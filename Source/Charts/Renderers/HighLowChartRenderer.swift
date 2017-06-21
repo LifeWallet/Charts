@@ -169,7 +169,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                 guard let dataSet = dataSets[i] as? IBarLineScatterCandleBubbleChartDataSet
                     else { continue }
                 
-                print("high low chart dataset: \(dataSet)")
+                //print("high low chart dataset: \(dataSet)")
                 if !shouldDrawValues(forDataSet: dataSet)
                 {
                     continue
