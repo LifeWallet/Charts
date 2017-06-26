@@ -23,7 +23,7 @@ open class BarChartView: BarLineChartViewBase, BarChartDataProvider
     
     //we don't have refrecne to renderer so we call the hack the delegate this way
     func callLifeWalletDelegate(){
-        print("reached positions view bar chart \(_viewPortHandler.chartWidth)")
+        //print("reached positions view bar chart \(_viewPortHandler.chartWidth)")
         lifeWalletFormatter?.dataForGraph(positions: positions, leftBorder: Float(_viewPortHandler.contentLeft), width: Float(_viewPortHandler.contentRight))
     }
     
