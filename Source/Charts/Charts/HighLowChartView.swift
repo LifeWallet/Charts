@@ -24,14 +24,14 @@ open class HighLowChartView: BarLineChartViewBase, CandleChartDataProvider
     
     // MARK: - CandleChartDataProvider
     
-    open var candleData: CandleChartData?{
+    @objc open var candleData: CandleChartData?{
         return _data as? CandleChartData
     }
     
     //lifewallet CandleChartDataProvider
-    open var positions = [Float]()
-    open var lifeWalletShouldHideMedian = false
+    @objc open var positions = [Float]()
+    @objc open var lifeWalletShouldHideMedian = false
     
     //lifewallet
-    open var lifeWalletShouldHideZeroValues = false
+    @objc open var lifeWalletShouldHideZeroValues = false
 }
