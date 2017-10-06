@@ -226,7 +226,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                                 x: pt.x,
                                 y: pt.y - yOffset),
                             align: .center,
-                            attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: dataSet.valueTextColorAt(j)])
+                            attributes: [NSAttributedStringKey.font: valueFont, NSAttributedStringKey.foregroundColor: dataSet.valueTextColorAt(j)])
                         
                         
                         let lowString = formatter.stringForValue(e.low, entry: e, dataSetIndex: i, viewPortHandler: viewPortHandler)
@@ -238,7 +238,7 @@ open class HighLowChartRenderer: LineScatterCandleRadarRenderer{
                                 x: lowPoint.x,
                                 y: lowPoint.y + 5.0),
                             align: .center,
-                            attributes: [NSFontAttributeName: valueFont, NSForegroundColorAttributeName: dataSet.valueTextColorAt(j)])
+                            attributes: [NSAttributedStringKey.font: valueFont, NSAttributedStringKey.foregroundColor: dataSet.valueTextColorAt(j)])
                     }
                     
                     if let icon = e.icon, dataSet.isDrawIconsEnabled

@@ -20,26 +20,26 @@ open class DataRenderer: Renderer
     open var scatterChart:ScatterChartView?
     open var highLowChart:HighLowChartView?
     
-    open var animator: Animator?
+    @objc open var animator: Animator?
     
-    public init(animator: Animator?, viewPortHandler: ViewPortHandler?)
+    @objc public init(animator: Animator?, viewPortHandler: ViewPortHandler?)
     {
         super.init(viewPortHandler: viewPortHandler)
         
         self.animator = animator
     }
 
-    open func drawData(context: CGContext)
+    @objc open func drawData(context: CGContext)
     {
         fatalError("drawData() cannot be called on DataRenderer")
     }
     
-    open func drawValues(context: CGContext)
+    @objc open func drawValues(context: CGContext)
     {
         fatalError("drawValues() cannot be called on DataRenderer")
     }
     
-    open func drawExtras(context: CGContext)
+    @objc open func drawExtras(context: CGContext)
     {
         fatalError("drawExtras() cannot be called on DataRenderer")
     }
@@ -47,20 +47,19 @@ open class DataRenderer: Renderer
     /// Draws all highlight indicators for the values that are currently highlighted.
     ///
     /// - parameter indices: the highlighted values
-    open func drawHighlighted(context: CGContext, indices: [Highlight])
+    @objc open func drawHighlighted(context: CGContext, indices: [Highlight])
     {
         fatalError("drawHighlighted() cannot be called on DataRenderer")
     }
     
     /// An opportunity for initializing internal buffers used for rendering with a new size.
     /// Since this might do memory allocations, it should only be called if necessary.
-    open func initBuffers() { }
+    @objc open func initBuffers() { }
     
-    open func isDrawingValuesAllowed(dataProvider: ChartDataProvider?) -> Bool
+    @objc open func isDrawingValuesAllowed(dataProvider: ChartDataProvider?) -> Bool
     {
         guard let data = dataProvider?.data
             else { return false }
-        
-        return data.entryCount < Int(CGFloat(dataProvider?.maxVisibleCount ?? 0) * (viewPortHandler?.scaleX ?? 1.0))
+        return data.entryCount < Int(CGFloat(dataProvider?.maxVisibleCount ?? 0) * (self.viewPortHandler?.scaleX ?? 1.0))
     }
 }
